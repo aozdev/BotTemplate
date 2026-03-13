@@ -40,7 +40,7 @@ module.exports = {
       }
 
       await interaction.reply({
-        content: `\`\`\`js\n${result}\n\`\`\``,
+        content: `\`\`\`js\n${result}\n\`\`\``, 
         ephemeral: true
       });
     } catch (error) {
