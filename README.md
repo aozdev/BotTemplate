@@ -61,23 +61,6 @@ This screenshot should show `/stats` with the embed fields visible, especially C
 
 This screenshot should show a safe sample `/eval` run in a developer account, ideally with a tiny expression like `1 + 1`.
 
-## Screenshot Guide
-
-Use Discord desktop in a clean test server and keep the same theme for every shot so the README feels consistent.
-
-Recommended captures:
-- `01-help-menu.png`: run `/help` and expand the full embed so both categories are readable
-- `02-avatar-command.png`: run `/avatar` on a user with a clear avatar and keep the full image preview in frame
-- `03-stats-command.png`: run `/stats` a few minutes after startup so uptime, CPU, and RAM values look realistic
-- `04-eval-command.png`: run `/eval code: 1 + 1` from the developer account and keep only the result block visible
-
-Tips:
-- Use a dedicated test server with no distracting channels in the sidebar
-- Keep Discord zoom around 100% so fields stay readable
-- Crop tightly around the command response
-- Hide private server names, user DMs, or tokens before saving screenshots
-- Save the images into `assets/screenshots/` with the exact filenames above
-
 ## Configuration
 
 Edit `config.json` before starting the bot.
