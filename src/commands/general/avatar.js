@@ -6,8 +6,11 @@ const {
   SlashCommandBuilder
 } = require("discord.js");
 
+const { respondToInteraction } = require("../../utils/interactionResponses");
+
 module.exports = {
   category: "General",
+  defer: true,
   data: new SlashCommandBuilder()
     .setName("avatar")
     .setDescription("Shows the avatar of a user")
@@ -36,7 +39,7 @@ module.exports = {
       )
     ];
 
-    await interaction.reply({
+    await respondToInteraction(interaction, {
       embeds: [embed],
       components
     });

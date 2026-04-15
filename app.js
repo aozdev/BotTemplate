@@ -3,12 +3,17 @@ const path = require("path");
 
 const config = require("./config.json");
 const { collectJavaScriptFiles } = require("./src/utils/collectFiles");
+const { acquireProcessLock, releaseProcessLock } = require("./src/utils/processLock");
 
 const client = new Client({
   intents: [GatewayIntentBits.Guilds]
 });
 
 client.commands = new Collection();
+
+client.on("error", (error) => {
+  console.error("[Client] Error event:", error);
+});
 
 async function deployCommands() {
   const commands = [];
@@ -36,6 +41,8 @@ require("./src/handlers/commandHandler")(client);
 require("./src/handlers/eventHandler")(client);
 
 (async () => {
+  let lockPath = null;
+
   try {
     if (process.argv.includes("--deploy")) {
       await deployCommands();
@@ -43,8 +50,27 @@ require("./src/handlers/eventHandler")(client);
       return;
     }
 
+    lockPath = acquireProcessLock(__dirname);
+
+    const releaseLock = () => releaseProcessLock(lockPath);
+
+    process.once("exit", releaseLock);
+    process.once("SIGINT", () => {
+      releaseLock();
+      process.exit(0);
+    });
+    process.once("SIGTERM", () => {
+      releaseLock();
+      process.exit(0);
+    });
+    process.once("SIGBREAK", () => {
+      releaseLock();
+      process.exit(0);
+    });
+
     await client.login(config.token);
   } catch (error) {
+    releaseProcessLock(lockPath);
     console.error(`[Startup] Failed: ${error.message}`);
     console.error(error);
     process.exitCode = 1;

@@ -10,6 +10,7 @@ const os = require("os");
 
 const config = require("../../../config.json");
 const packageJson = require("../../../package.json");
+const { respondToInteraction } = require("../../utils/interactionResponses");
 
 function formatBytes(bytes) {
   const units = ["B", "KB", "MB", "GB"];
@@ -63,6 +64,7 @@ function toDiscordTimestamp(date, style = "F") {
 
 module.exports = {
   category: "General",
+  defer: true,
   data: new SlashCommandBuilder()
     .setName("stats")
     .setDescription("Shows bot runtime details and resource usage"),
@@ -109,7 +111,7 @@ module.exports = {
       );
     }
 
-    await interaction.reply({
+    await respondToInteraction(interaction, {
       embeds: [embed],
       components
     });

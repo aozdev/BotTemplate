@@ -1,7 +1,7 @@
-const { ActivityType } = require("discord.js");
+const { ActivityType, Events } = require("discord.js");
 
 module.exports = {
-  name: "ready",
+  name: Events.ClientReady,
   once: true,
   execute(client) {
     console.log(`[Client] Ready: ${client.user.tag}`);
