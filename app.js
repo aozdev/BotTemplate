@@ -28,6 +28,8 @@ async function deployCommands() {
   await rest.put(Routes.applicationCommands(config.clientId), {
     body: commands
   });
+
+  console.log(`[Deploy] Synced: ${commands.length} global slash commands`);
 }
 
 require("./src/handlers/commandHandler")(client);
@@ -37,14 +39,14 @@ require("./src/handlers/eventHandler")(client);
   try {
     if (process.argv.includes("--deploy")) {
       await deployCommands();
-      console.log("Successfully deployed global slash commands.");
-      console.log("Deploy-only mode complete.");
+      console.log("[Deploy] Complete: deploy-only mode");
       return;
     }
 
     await client.login(config.token);
   } catch (error) {
-    console.error("Failed to start the bot:", error);
+    console.error(`[Startup] Failed: ${error.message}`);
+    console.error(error);
     process.exitCode = 1;
   }
 })();

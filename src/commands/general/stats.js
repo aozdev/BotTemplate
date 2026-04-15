@@ -11,17 +11,6 @@ const os = require("os");
 const config = require("../../../config.json");
 const packageJson = require("../../../package.json");
 
-function formatDuration(totalSeconds) {
-  const days = Math.floor(totalSeconds / 86400);
-  const hours = Math.floor((totalSeconds % 86400) / 3600);
-  const minutes = Math.floor((totalSeconds % 3600) / 60);
-  const seconds = Math.floor(totalSeconds % 60);
-
-  return [days && `${days}d`, hours && `${hours}h`, minutes && `${minutes}m`, `${seconds}s`]
-    .filter(Boolean)
-    .join(" ");
-}
-
 function formatBytes(bytes) {
   const units = ["B", "KB", "MB", "GB"];
   let value = bytes;
@@ -68,6 +57,10 @@ function getRepositoryUrl() {
     .replace(/\.git$/, "");
 }
 
+function toDiscordTimestamp(date, style = "F") {
+  return `<t:${Math.floor(date.getTime() / 1000)}:${style}>`;
+}
+
 module.exports = {
   category: "General",
   data: new SlashCommandBuilder()
@@ -77,19 +70,26 @@ module.exports = {
   async execute(interaction) {
     const memoryUsage = process.memoryUsage();
     const cpuUsage = getAverageCpuUsage();
-    const uptime = formatDuration(process.uptime());
     const repositoryUrl = getRepositoryUrl();
+    const startedAt = new Date(Date.now() - process.uptime() * 1000);
+    const botAvatarUrl = interaction.client.user.displayAvatarURL({ size: 4096 });
 
     const embed = new EmbedBuilder()
       .setTitle(`${interaction.client.user.username} Stats`)
       .setColor("#5865F2")
+      .setThumbnail(botAvatarUrl)
       .addFields(
         { name: "Developer", value: getDeveloperLabel(), inline: true },
-        { name: "Uptime", value: uptime, inline: true },
+        { name: "Uptime", value: toDiscordTimestamp(startedAt, "R"), inline: true },
         { name: "Latency", value: `${Math.round(interaction.client.ws.ping)}ms`, inline: true },
         { name: "CPU Usage", value: `${cpuUsage.toFixed(2)}%`, inline: true },
         { name: "RAM Usage", value: formatBytes(memoryUsage.rss), inline: true },
         { name: "Servers", value: `${interaction.client.guilds.cache.size}`, inline: true },
+        {
+          name: "Started At",
+          value: toDiscordTimestamp(startedAt, "F"),
+          inline: true
+        },
         { name: "Node.js", value: process.version, inline: true },
         { name: "Discord.js", value: `v${discordJsVersion}`, inline: true },
         { name: "Platform", value: `${os.type()} ${os.release()}`, inline: true }
@@ -102,7 +102,7 @@ module.exports = {
       components.push(
         new ActionRowBuilder().addComponents(
           new ButtonBuilder()
-            .setLabel("GitHub")
+            .setLabel("View on GitHub")
             .setStyle(ButtonStyle.Link)
             .setURL(repositoryUrl)
         )

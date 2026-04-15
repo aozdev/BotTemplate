@@ -10,14 +10,15 @@ module.exports = (client) => {
     const command = require(filePath);
     const fallbackCategory = path.basename(path.dirname(filePath));
     const category = command.category || fallbackCategory;
+    const fileName = path.basename(filePath);
 
     if (!command.data || !command.data.name) {
-      console.log(`Failed to load command: ${path.basename(filePath)}`);
+      console.log(`[Command] Failed: ${fileName}`);
       continue;
     }
 
     command.category = category.charAt(0).toUpperCase() + category.slice(1);
     client.commands.set(command.data.name, command);
-    console.log(`Loaded command: ${command.data.name} [${command.category}]`);
+    console.log(`[Command] Loaded: ${fileName}`);
   }
 };

@@ -8,13 +8,14 @@ module.exports = (client) => {
 
   for (const filePath of eventFiles) {
     const event = require(filePath);
+    const fileName = path.basename(filePath);
 
     if (event.once) {
       client.once(event.name, (...args) => event.execute(client, ...args));
     } else {
       client.on(event.name, (...args) => event.execute(client, ...args));
     }
-  }
 
-  console.log("Loaded client events.");
+    console.log(`[Event] Loaded: ${fileName}`);
+  }
 };

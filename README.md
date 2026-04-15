@@ -112,6 +112,12 @@ npm run deploy
 npm start
 ```
 
+Optional development runner:
+
+```bash
+npm run dev
+```
+
 Optional local starter:
 
 ```bat
@@ -139,10 +145,10 @@ The bot should have at least these permissions:
 Startup logs are intentionally plain.
 Examples:
 
-- `Loaded command: help [General]`
-- `Loaded client events.`
-- `Successfully deployed global slash commands.`
-- `Bot ready: YourBotName#0000`
+- `[Command] Loaded: stats.js`
+- `[Event] Loaded: ready.js`
+- `[Deploy] Synced: 5 global slash commands`
+- `[Client] Ready: YourBotName#0000`
 
 ## Slash Command Registration
 
