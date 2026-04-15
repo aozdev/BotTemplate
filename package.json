@@ -1,7 +1,7 @@
 {
-  "name": "v14-bottemplate-main",
+  "name": "bottemplate",
   "version": "1.0.0",
-  "description": "A cleanly written bot template created using discord.js v14 that fully supports slash commands.",
+  "description": "A Discord.js v14 slash-command bot template with categorized commands and runtime stats.",
   "keywords": [
     "discord-bot",
     "v14",
@@ -9,20 +9,22 @@
     "slash",
     "commands"
   ],
-  "homepage": "https://github.com/aozdev/v14-BotTemplate#readme",
+  "homepage": "https://github.com/aozdev/BotTemplate#readme",
   "bugs": {
-    "url": "https://github.com/aozdev/v14-BotTemplate/issues"
+    "url": "https://github.com/aozdev/BotTemplate/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/aozdev/v14-BotTemplate.git"
+    "url": "git+https://github.com/aozdev/BotTemplate.git"
   },
   "license": "MIT",
   "author": "aozdev",
   "type": "commonjs",
-  "main": "src/index.js",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js",
+    "deploy": "node app.js --deploy",
+    "check": "node --check app.js && node --check src/handlers/commandHandler.js && node --check src/handlers/eventHandler.js && node --check src/events/interactionCreate.js && node --check src/events/ready.js && node --check src/commands/general/help.js && node --check src/commands/general/ping.js && node --check src/commands/general/avatar.js && node --check src/commands/general/stats.js && node --check src/commands/developer/eval.js && node --check src/utils/collectFiles.js"
   },
   "dependencies": {
     "discord.js": "^14.25.1"

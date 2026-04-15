@@ -1,58 +1,82 @@
 # BotTemplate
 
-BotTemplate is a fully slash-command Discord.js v14 starter bot for clean Discord bot development.
-It keeps the codebase simple, uses category-based command folders, stores configuration in a single `config.json` file, and keeps startup logs intentionally plain.
+BotTemplate is a fully slash-command Discord.js v14 starter bot focused on a clean structure, categorized commands, and easy customization.
+It keeps the setup simple, uses a single `app.js` entry file, and includes practical starter commands such as `/help`, `/ping`, `/avatar`, `/stats`, and a developer-only `/eval`.
 
 ## Highlights
 
 - Slash commands only
 - Discord.js v14 architecture
-- Single root `app.js` entry file
-- Command loading and command deployment handled directly inside `app.js`
-- Category-based command folders such as `src/commands/bot` and `src/commands/developer`
-- Plain startup logs for loaded events, loaded commands, and deployed commands
-- Developer-only `/eval` command
-- `/stats` command with runtime, RAM, latency, version details, and GitHub button
-- `config.json` based setup without a separate `config.js`
-- Simple Windows starter file through `start.bat`
+- Categorized command folders
+- Global command deployment with `npm run deploy`
+- Runtime stats command with CPU, RAM, uptime, developer, and version details
+- Avatar command with direct image button
+- Developer-only eval command
+- Simple configuration through `config.json`
 
 ## Commands
 
-### Bot
+### General
 
 - `/help`
-  Shows the help menu and command groups.
+  Shows the available command groups.
 
 - `/ping`
   Shows gateway latency and round-trip time.
 
+- `/avatar`
+  Shows your avatar or another user's avatar.
+
 - `/stats`
-  Shows runtime details, RAM, latency, version information, and a GitHub link button.
+  Shows bot runtime details such as CPU usage, RAM usage, uptime, latency, developer info, platform, and version data.
 
 ### Developer
 
 - `/eval`
-  Runs JavaScript code for the configured developer only.
+  Evaluates JavaScript code and is limited to the configured developer ID.
 
 ## Visual Walkthrough
 
 ### 1. Help Menu
 
-![Help Menu](assets/screenshots/01-help-menu.svg)
+![Help Menu](assets/screenshots/01-help-menu.png)
 
-This view shows the grouped slash command help menu. It highlights the folder-based command categories and the clean button row for GitHub, invite, and support links.
+This screenshot should show `/help` returning the categorized command list with the General and Developer sections visible.
 
-### 2. Stats Command
+### 2. Avatar Command
 
-![Stats Command](assets/screenshots/02-stats-command.svg)
+![Avatar Command](assets/screenshots/02-avatar-command.png)
 
-This view shows the stats output with latency, uptime, RAM usage, runtime versions, platform details, and the GitHub button.
+This screenshot should show `/avatar` with the embed image fully visible and the `Open Avatar` button under it.
 
-### 3. Startup Console
+### 3. Stats Command
 
-![Startup Console](assets/screenshots/03-startup-console.svg)
+![Stats Command](assets/screenshots/03-stats-command.png)
 
-This view shows the plain terminal logging style used during startup. Events, commands, and deployment messages are intentionally easy to scan.
+This screenshot should show `/stats` with the embed fields visible, especially CPU Usage, RAM Usage, Uptime, Developer, and the GitHub button.
+
+### 4. Eval Command
+
+![Eval Command](assets/screenshots/04-eval-command.png)
+
+This screenshot should show a safe sample `/eval` run in a developer account, ideally with a tiny expression like `1 + 1`.
+
+## Screenshot Guide
+
+Use Discord desktop in a clean test server and keep the same theme for every shot so the README feels consistent.
+
+Recommended captures:
+- `01-help-menu.png`: run `/help` and expand the full embed so both categories are readable
+- `02-avatar-command.png`: run `/avatar` on a user with a clear avatar and keep the full image preview in frame
+- `03-stats-command.png`: run `/stats` a few minutes after startup so uptime, CPU, and RAM values look realistic
+- `04-eval-command.png`: run `/eval code: 1 + 1` from the developer account and keep only the result block visible
+
+Tips:
+- Use a dedicated test server with no distracting channels in the sidebar
+- Keep Discord zoom around 100% so fields stay readable
+- Crop tightly around the command response
+- Hide private server names, user DMs, or tokens before saving screenshots
+- Save the images into `assets/screenshots/` with the exact filenames above
 
 ## Configuration
 
@@ -62,23 +86,9 @@ Edit `config.json` before starting the bot.
 {
   "token": "YOUR_BOT_TOKEN",
   "clientId": "YOUR_CLIENT_ID",
-  "developerId": "YOUR_DEVELOPER_ID",
-  "guildId": "YOUR_GUILD_ID",
-  "commandDeployment": "guild",
-  "embedColor": "#5865F2",
-  "presence": "with slash commands",
-  "supportServer": "https://discord.gg/your-server",
-  "inviteUrl": "https://discord.com/oauth2/authorize?client_id=YOUR_CLIENT_ID&scope=bot%20applications.commands&permissions=8",
-  "githubUrl": "https://github.com/aozdev/BotTemplate"
+  "developerId": "YOUR_DISCORD_USER_ID"
 }
 ```
-
-Notes:
-
-- `commandDeployment` supports `guild` and `global`.
-- `guildId` is required when `commandDeployment` is set to `guild`.
-- `embedColor` is the default embed color used across the bot.
-- `developerId` is the only account allowed to use `/eval`.
 
 ## Installation
 
@@ -90,16 +100,16 @@ npm install
 
 2. Fill `config.json` with your real values.
 
-3. Start the bot:
-
-```bash
-npm start
-```
-
-Optional deployment only:
+3. Deploy slash commands:
 
 ```bash
 npm run deploy
+```
+
+4. Start the bot:
+
+```bash
+npm start
 ```
 
 Optional local starter:
@@ -114,20 +124,30 @@ Optional validation:
 npm run check
 ```
 
+## Required Bot Permissions
+
+The bot should have at least these permissions:
+
+- View Channels
+- Send Messages
+- Use Slash Commands
+- Send Messages in Threads
+- Embed Links
+
 ## Logging
 
 Startup logs are intentionally plain.
 Examples:
 
-- `[EVENT LOADED] interactionCreate.js event succesfully loaded`
-- `[COMMAND LOADED] eval.js command succesfully loaded`
-- `[COMMAND DEPLOYED] help.js command succesfully deployed`
+- `Loaded command: help [General]`
+- `Loaded client events.`
+- `Successfully deployed global slash commands.`
+- `Bot ready: YourBotName#0000`
 
 ## Slash Command Registration
 
-Application commands are deployed at startup through the REST API.
-If `commandDeployment` is set to `guild`, command refresh is usually immediate.
-If `commandDeployment` is set to `global`, Discord may take a short time to refresh commands after a restart.
+Application commands are registered globally through `npm run deploy`.
+Discord may take a short time to refresh global slash commands after deployment.
 
 ## Project Structure
 
@@ -137,13 +157,12 @@ config.json
 start.bat
 assets/
   screenshots/
-scripts/
-  check.js
 src/
   commands/
-    bot/
     developer/
+    general/
   events/
+  handlers/
   utils/
 ```
 
