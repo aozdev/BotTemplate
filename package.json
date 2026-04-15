@@ -25,7 +25,7 @@
     "start": "node app.js",
     "dev": "nodemon app.js",
     "deploy": "node app.js --deploy",
-    "check": "node --check app.js && node --check src/handlers/commandHandler.js && node --check src/handlers/eventHandler.js && node --check src/events/interactionCreate.js && node --check src/events/ready.js && node --check src/commands/general/help.js && node --check src/commands/general/ping.js && node --check src/commands/general/avatar.js && node --check src/commands/general/stats.js && node --check src/commands/developer/eval.js && node --check src/utils/collectFiles.js"
+    "check": "node --check app.js && node --check src/handlers/commandHandler.js && node --check src/handlers/eventHandler.js && node --check src/events/interactionCreate.js && node --check src/events/ready.js && node --check src/commands/general/help.js && node --check src/commands/general/ping.js && node --check src/commands/general/avatar.js && node --check src/commands/general/stats.js && node --check src/commands/developer/eval.js && node --check src/utils/collectFiles.js && node --check src/utils/interactionResponses.js && node --check src/utils/processLock.js"
   },
   "dependencies": {
     "discord.js": "^14.25.1"

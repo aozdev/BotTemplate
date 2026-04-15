@@ -1,7 +1,9 @@
+const { respondToInteraction } = require("../../utils/interactionResponses");
 const { EmbedBuilder, SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
   category: "General",
+  defer: true,
   data: new SlashCommandBuilder()
     .setName("help")
     .setDescription("Shows the available slash commands"),
@@ -38,6 +40,6 @@ module.exports = {
       )
       .setFooter({ text: `Requested by ${interaction.user.tag}` });
 
-    await interaction.reply({ embeds: [embed] });
+    await respondToInteraction(interaction, { embeds: [embed] });
   }
 };

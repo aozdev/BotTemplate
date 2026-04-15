@@ -1,11 +1,13 @@
-const { SlashCommandBuilder } = require("discord.js");
+const { MessageFlags, SlashCommandBuilder } = require("discord.js");
 const { inspect } = require("util");
 
 const config = require("../../../config.json");
+const { respondToInteraction } = require("../../utils/interactionResponses");
 
 module.exports = {
   category: "Developer",
   developerOnly: true,
+  defer: "ephemeral",
   data: new SlashCommandBuilder()
     .setName("eval")
     .setDescription("Evaluates JavaScript code")
@@ -18,9 +20,9 @@ module.exports = {
 
   async execute(interaction) {
     if (interaction.user.id !== config.developerId) {
-      await interaction.reply({
+      await respondToInteraction(interaction, {
         content: "You are not allowed to use this command.",
-        ephemeral: true
+        flags: MessageFlags.Ephemeral
       });
       return;
     }
@@ -42,14 +44,14 @@ module.exports = {
         result = `${result.slice(0, 1900)}...`;
       }
 
-      await interaction.reply({
+      await respondToInteraction(interaction, {
         content: `\`\`\`js\n${result}\n\`\`\``,
-        ephemeral: true
+        flags: MessageFlags.Ephemeral
       });
     } catch (error) {
-      await interaction.reply({
+      await respondToInteraction(interaction, {
         content: `\`\`\`js\n${error}\n\`\`\``,
-        ephemeral: true
+        flags: MessageFlags.Ephemeral
       });
     }
   }
